@@ -17,4 +17,4 @@ Separately, I’d like to note that this cheat sheet will be available to anyone
 We are SOC/DFIR-specialists. On this website we will try to create useful CheatSheet of DFIR artifacts which can be used by other specialists in SOC/DFIR and even Penetration Testers. The CheatSheet will be include Endpoint Artifacts of Windows OS. 
 
 ### DFIR CheatSheet
-Here you can easily found our [[CheatSheet]]
+Here you can easily found our [[Cheat Sheet]]
