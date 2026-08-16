@@ -121,16 +121,16 @@ The forensic value of MFT artifacts varies depending on the investigation. Some 
 ### Analysis Tools
 
 > [!info]- Click here
-> The answer depends on the goal. For viewing raw byte data—such as <span style="color: #FFD166;">resident files</span>—any hex editor will suffice, for example <span style="color: #D96C6C;">HexED.it</span>.
+> The answer depends on the goal. For viewing raw byte data – such as <span style="color: #FFD166;">resident files</span> – any hex editor will suffice, for example <span style="color: #D96C6C;">HexED.it</span>.
 > 
 > For properly parsing the MFT table, three tools are worth considering:
 > 
-> **[MFTCmd](https://github.com/EricZimmerman/MFTECmd)** — a <span style="color: #FFD166;">CLI tool</span>, suits experienced users familiar with parsing flags.
+> **[MFTCmd](https://github.com/EricZimmerman/MFTECmd)** – a <span style="color: #FFD166;">CLI tool</span>, suits experienced users familiar with parsing flags.
 > 
 > Example command:   `.\MFTECmd.exe -f C:\Users\<username>\Desktop\C\MFT --csv C:\Users\Choice\Desktop\ --csvf Ready.csv`
 > ![[Pasted image 20260816164841.png]]
 > 
-> **[MFTExplorer](https://ericzimmerman.github.io/#forensic-tools)** — the <span style="color: #FFD166;">GUI counterpart</span>, better suited for beginners; offers filtering, automatic parsing, and a clean file/folder display.
+> **[MFTExplorer](https://ericzimmerman.github.io/#forensic-tools)** – the <span style="color: #FFD166;">GUI counterpart</span>, better suited for beginners; offers filtering, automatic parsing, and a clean file/folder display.
 > ![[Pasted image 20260816165702.png]]
 > 
 > **[KAPE + MFTECmd_$MFT](https://www.kroll.com/en/services/cyber/reactive-services/kroll-artifact-parser-and-extractor-kape)** — a <span style="color: #FFD166;">KAPE module</span> that automates MFT parsing; requires <span style="color: #D96C6C;">KAPE</span> to be installed.
@@ -142,6 +142,6 @@ The forensic value of MFT artifacts varies depending on the investigation. Some 
 ### Additional Resources
 
 > [!tip]- Click here
-> - [DFIR Notes — MFT, NTFS, $LogFile and $UsnJrnl Forensics](https://mahmoud-shaker.gitbook.io/dfir-notes/master-file-table-mft-ntfs-usdlogfile-and-usdusnjrnl-forensics)
+> - [DFIR Notes — MFT, NTFS](https://mahmoud-shaker.gitbook.io/dfir-notes/master-file-table-mft-ntfs-usdlogfile-and-usdusnjrnl-forensics)
 > - [The MFT — The One Artifact I Check First on Every Windows Investigation](https://mohitdhabuwala17.medium.com/the-mft-the-one-artifact-i-check-first-on-every-windows-investigation-bc1fc32a730e)
 > - [MFT Explorer & MFTECmd — AboutDFIR](https://aboutdfir.com/toolsandartifacts/windows/mft-explorer-mftecmd/)
