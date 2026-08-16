@@ -4,7 +4,7 @@ authors: 2026-08-16
 ---
 ---
 ### Defenition
-**MFT (Master File Table)** -- the primary ==database of the NTFS file system that stores metadata about files and directories==, including their names, timestamps, sizes, attributes, and data locations.
+**MFT (Master File Table)** – the primary database of the NTFS file system that stores metadata about files and directories, including their names, timestamps, sizes, attributes, and data locations.
 
 ---
 ### Path
@@ -32,6 +32,7 @@ The MFT can store information about
 ### Usefull Information from the MFT
 The forensic value of MFT artifacts varies depending on the investigation. Some artifacts can provide highly valuable evidence, while others may be less useful depending on the context.
 ##### ⚪ Entry and Parent Entry numbers
+
 > [!question]- Click here
 > 
 >The <span style="color: #D96C6C;">Entry Number</span> <span style="color: #FFD166;">uniquely identifies</span> a file or folder entry in the MFT table. For example, the file <span style="color: #D96C6C;">malware.exe</span> might have an Entry Number of 97134 – this is its unique identifier within the MFT. 
@@ -115,3 +116,32 @@ The forensic value of MFT artifacts varies depending on the investigation. Some 
 > <span style="color: #D96C6C;">Reparse Target</span> stores the <span style="color: #FFD166;">destination of a symbolic link or junction point</span>. Even if the link itself has been deleted, the MFT entry may still retain this value – allowing you to <span style="color: #FFD166;">recover where it pointed</span>.
 > 
 > This is useful in two ways. First, it helps <span style="color: #FFD166;">reconstruct the original entry point</span> – for example, if an attacker created a symlink to <span style="color: #D96C6C;">redirect access to a privileged file</span>. Second, the presence of <span style="color: #FFD166;">unexpected reparse points</span> in suspicious directories is itself an indicator of potential <span style="color: #D96C6C;">privilege escalation</span> or <span style="color: #D96C6C;">persistence</span> activity.
+---
+
+### Analysis Tools
+
+> [!info]- Click here
+> The answer depends on the goal. For viewing raw byte data—such as <span style="color: #FFD166;">resident files</span>—any hex editor will suffice, for example <span style="color: #D96C6C;">HexED.it</span>.
+> 
+> For properly parsing the MFT table, three tools are worth considering:
+> 
+> **[MFTCmd](https://github.com/EricZimmerman/MFTECmd)** — a <span style="color: #FFD166;">CLI tool</span>, suits experienced users familiar with parsing flags.
+> 
+> Example command:   `.\MFTECmd.exe -f C:\Users\<username>\Desktop\C\MFT --csv C:\Users\Choice\Desktop\ --csvf Ready.csv`
+> ![[Pasted image 20260816164841.png]]
+> 
+> **[MFTExplorer](https://ericzimmerman.github.io/#forensic-tools)** — the <span style="color: #FFD166;">GUI counterpart</span>, better suited for beginners; offers filtering, automatic parsing, and a clean file/folder display.
+> ![[Pasted image 20260816165702.png]]
+> 
+> **[KAPE + MFTECmd_$MFT](https://www.kroll.com/en/services/cyber/reactive-services/kroll-artifact-parser-and-extractor-kape)** — a <span style="color: #FFD166;">KAPE module</span> that automates MFT parsing; requires <span style="color: #D96C6C;">KAPE</span> to be installed.
+> 
+> Example command: `.\kape.exe --tsource "C:\Users\..." --target $MFT --tdest "..." --module MFTECmd`
+> ![[Pasted image 20260816181450.png]]
+> 
+> *This list reflects the author's personal experience and is not exhaustive.*
+### Additional Resources
+
+> [!tip]- Click here
+> - [DFIR Notes — MFT, NTFS, $LogFile and $UsnJrnl Forensics](https://mahmoud-shaker.gitbook.io/dfir-notes/master-file-table-mft-ntfs-usdlogfile-and-usdusnjrnl-forensics)
+> - [The MFT — The One Artifact I Check First on Every Windows Investigation](https://mohitdhabuwala17.medium.com/the-mft-the-one-artifact-i-check-first-on-every-windows-investigation-bc1fc32a730e)
+> - [MFT Explorer & MFTECmd — AboutDFIR](https://aboutdfir.com/toolsandartifacts/windows/mft-explorer-mftecmd/)
