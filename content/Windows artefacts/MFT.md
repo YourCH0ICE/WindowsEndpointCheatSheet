@@ -139,9 +139,18 @@ The forensic value of MFT artifacts varies depending on the investigation. Some 
 > ![[Pasted image 20260816181450.png]]
 > 
 > *This list reflects the author's personal experience and is not exhaustive.*
+### Overall
+
+> [!summary]- Click here
+> <span style="color: #D96C6C;">MFT</span> is one of the most valuable artifacts in <span style="color: #FFD166;">digital forensics and incident response</span>. A single table entry can provide file creation timestamps, full directory paths, residency data, ADS indicators, download origins, and symbolic link destinations — making it a <span style="color: #FFD166;">reliable starting point for almost any Windows investigation</span>.
+> 
+> The real value of MFT lies in its <span style="color: #FFD166;">persistence</span>. I mean even <span style="color: #D96C6C;">deleted files</span> leave traces, <span style="color: #D96C6C;">tampered timestamps</span> can be detected through <span style="color: #FFD166;">0x10/0x30 discrepancies</span>, and <span style="color: #D96C6C;">Zone Identifiers</span> can directly expose <span style="color: #D96C6C;">C2 infrastructure</span>. Combined, these fields allow an investigator to <span style="color: #FFD166;">reconstruct a detailed picture of file activity</span> with minimal reliance on other artifacts.
+
 ### Additional Resources
 
 > [!tip]- Click here
 > - [DFIR Notes – MFT, NTFS](https://mahmoud-shaker.gitbook.io/dfir-notes/master-file-table-mft-ntfs-usdlogfile-and-usdusnjrnl-forensics)
 > - [The MFT – The One Artifact I Check First on Every Windows Investigation](https://mohitdhabuwala17.medium.com/the-mft-the-one-artifact-i-check-first-on-every-windows-investigation-bc1fc32a730e)
 > - [MFT Explorer & MFTECmd – AboutDFIR](https://aboutdfir.com/toolsandartifacts/windows/mft-explorer-mftecmd/)
+
+
