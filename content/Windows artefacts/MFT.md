@@ -142,6 +142,6 @@ The forensic value of MFT artifacts varies depending on the investigation. Some 
 ### Additional Resources
 
 > [!tip]- Click here
-> - [DFIR Notes — MFT, NTFS](https://mahmoud-shaker.gitbook.io/dfir-notes/master-file-table-mft-ntfs-usdlogfile-and-usdusnjrnl-forensics)
-> - [The MFT — The One Artifact I Check First on Every Windows Investigation](https://mohitdhabuwala17.medium.com/the-mft-the-one-artifact-i-check-first-on-every-windows-investigation-bc1fc32a730e)
-> - [MFT Explorer & MFTECmd — AboutDFIR](https://aboutdfir.com/toolsandartifacts/windows/mft-explorer-mftecmd/)
+> - [DFIR Notes – MFT, NTFS](https://mahmoud-shaker.gitbook.io/dfir-notes/master-file-table-mft-ntfs-usdlogfile-and-usdusnjrnl-forensics)
+> - [The MFT – The One Artifact I Check First on Every Windows Investigation](https://mohitdhabuwala17.medium.com/the-mft-the-one-artifact-i-check-first-on-every-windows-investigation-bc1fc32a730e)
+> - [MFT Explorer & MFTECmd – AboutDFIR](https://aboutdfir.com/toolsandartifacts/windows/mft-explorer-mftecmd/)
