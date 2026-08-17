@@ -10,7 +10,7 @@ authors: 2026-08-16
 ### Path
 The MFT is typically located at
 ```
-C:\Users\$MFT
+C:\$MFT
 ```
 ---
 ### What information does the MFT store?
