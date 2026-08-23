@@ -37,14 +37,14 @@ C:\$Extend\$UsnJrnl — exported $Max stream containing configuration metadata
 ### What information does the $J store?
 The $J can store information about
 
-| Category | Fields |
-| ----------------------- | --------------------------------------------------------------------------------------------------------- |
-| **File Information** | `Name`, `Extension` |
+| Category              | Fields                                |
+| --------------------- | ------------------------------------- |
+| **File Information**  | `Name`, `Extension`                   |
 | **Entry Information** | `Entry Number`, `Parent Entry Number` |
-| **Timestamps** | `Update Timestamp` |
-| **Journal Metadata** | `Update Sequence Number` |
-| **Change Tracking** | `Update Reasons` |
-| **File Attributes** | `FileAttribute` |
+| **Timestamps**        | `Update Timestamp`                    |
+| **Journal Metadata**  | `Update Sequence Number`              |
+| **Change Tracking**   | `Update Reasons`                      |
+| **File Attributes**   | `FileAttribute`                       |
 
 ---
 ### Usefull Information from the $J
