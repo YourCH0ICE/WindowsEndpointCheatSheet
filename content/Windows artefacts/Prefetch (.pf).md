@@ -1,8 +1,8 @@
 ---
-title: 5. Prefetch
+title: 4. Prefetch
 authors: 2026-08-18
 ---
----
+d---
 ### Defenition
 
 <span style="color: #D96C6C;">Prefetch</span> files are created by the <span style="color: #D96C6C;">Prefetcher</span> – a Windows component that <span style="color: #FFD166;">tracks code and data loaded during application and OS startup</span>, storing this information in trace files to speed up subsequent launches. The maximum number of Prefetch files is <span style="color: #FFD166;">1,024</span>. Once this limit is reached, the <span style="color: #FFD166;">oldest entries are overwritten</span> by new ones.
