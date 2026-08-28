@@ -115,9 +115,7 @@ It is worth noting that the fields described below represent what we consider th
 > **[MFTCmd](https://github.com/EricZimmerman/MFTECmd)** – CLI tool for parsing `$J`.
 > 
 > Example command: 
-> ```
->.\MFTECmd.exe -f C:\Users\<username>\Desktop\C\Extend\J --csv . --csvf C:\<destination_path>\J.csv
-> ```
+> `.\MFTECmd.exe -f C:\Users\<username>\Desktop\C\Extend\J --csv . --csvf C:\<destination_path>\J.csv` 
 > ![[Pasted image 20260817132743.png]]
 > ![[Pasted image 20260817132837.png]]
 > 
