@@ -29,7 +29,7 @@ The MFT can store information about
 | **Other**                       | `SI<FN`, `u Sec Zeros`, `Copied`                                                                                                                                         |
 
 ---
-### Usefull Information from the MFT
+### Useful Information from the MFT
 The forensic value of MFT artifacts varies depending on the investigation. Some artifacts can provide highly valuable evidence, while others may be less useful depending on the context.
 ##### ⚪ Entry and Parent Entry numbers
 

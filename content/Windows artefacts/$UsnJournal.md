@@ -47,7 +47,7 @@ The $J can store information about
 | **File Attributes**   | `FileAttribute`                       |
 
 ---
-### Usefull Information from the $J
+### Useful Information from the $J
 It is worth noting that the fields described below represent what we consider the most valuable for analysis. However, their effectiveness depends entirely on the case at hand.
 ##### ⚪ Update Timestamp
 
