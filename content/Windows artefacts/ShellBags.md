@@ -174,14 +174,12 @@ The forensic value of ShellBags depends on the investigation, but they are espec
 > For parsing `ShellBags`, you can use **ShellBags**, which can parse the artifact into JSON or CSV files. After successful parsing, you can use **Timeline Explorer** or any other CSV/JSON editor capable of correctly displaying the file's contents for filtering and analysis.
 > 
 > **[ShellBags](https://download.ericzimmermanstools.com/net9/ShellBagsExplorer.zip)** – GUI tool for parsing **ShellBags**`.
-> 
-> ![[Pasted image 20260906131008.png]]
+> > ![[Pasted image 20260906131008.png]]
 > 
 > 
 > [SBECmd](https://ericzimmerman.github.io/) – command-line parser for exporting ShellBag data.
-> 
-> ![[Pasted image 20260906142842.png]] 
-> 
+> > ![[Pasted image 20260906142842.png]] 
+>
 > `Registry Explorer` can also be used to manually examine the underlying **ShellBag Registry** data. The relevant `BagMRU` structure consists primarily of numerically named subkeys and values such as: `0`, `1`, `2`, `3`, ... These numbers represent positions within the hierarchical `BagMRU` tree and **are not the actual folder names**. The corresponding Registry values contain encoded binary Shell Item structures from which information such as folder names and other metadata can be recovered. For example: `BagMRU\1\1\6\0` may represent several levels of folder navigation, but the Registry path itself is not immediately meaningful to an investigator. For this reason, <span style="color: #FFD166;">Registry Explorer is especially useful for **manual validation and examination of the original Registry data**</span>, while tools such as ShellBags Explorer are generally more convenient for reconstructing and reviewing ShellBag activity in a human-readable form.
 > 
 > ![[Pasted image 20260906140414.png]]
