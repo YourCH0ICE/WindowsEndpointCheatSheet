@@ -1,6 +1,6 @@
 ---
 title: 3. Amcache
-authors: 2026-08-17
+authors: 2026-08-29
 ---
 ---
 ### Definition
@@ -91,7 +91,7 @@ The Amcache can store information about:
 > 
 > Example command: 
 > `.\AmcacheParser.exe -f C:\Windows\appcompat\Programs\Amcache.hve --csv C:\<destination_path>\File_name.csv`
-> > 
+> 
 > ![[Pasted image 20260828203839.png]]
 >  
 > In addition, as mentioned earlier, you can use the ready-made <span style="color: #D96C6C;">[KAPE](https://www.kroll.com/en/services/cyber/reactive-services/kroll-artifact-parser-and-extractor-kape)</span> module – <span style="color: #D96C6C;">AmcacheParser</span>. Once parsing is complete, you'll receive a file in <span style="color: #FFD166;">CSV or JSON format</span>, depending on the selected settings.
