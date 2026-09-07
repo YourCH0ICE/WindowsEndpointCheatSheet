@@ -1,6 +1,6 @@
 ---
 title: 3. Amcache
-authors: 2026-08-17
+authors: 2026-08-29
 ---
 ---
 ### Definition
@@ -25,134 +25,77 @@ C:\Windows\AppCompat\Programs\Amcache.hve
 
 ---
 ### What information does the Amcache store?
-The Amcachecan store information about: 
+The Amcache can store information about: 
 
-| Category                          | Fields                    |
-| --------------------------------- | ------------------------- |
-| Program identifier                | `ProgramID`               |
-| Application name                  | `ProgramName`             |
-| Application version               | `Version`                 |
-| Software publisher                | `Publisher`               |
-| Installation directory            | `RootDirPath`             |
-| Installation date                 | `InstallDate`             |
-| Registry key modification time    | `KeyLastWriteTime`        |
-| UWP package name                  | `PackageFullName`         |
-| Installation source               | `InstallSourceType`       |
-| MSI product code GUID             | `MSIProductCode`          |
-| MSI package code GUID             | `MSIPackageCode`          |
-| Uninstall registry key            | `UninstallKey`            |
-| Uninstall command                 | `UninstallString`         |
-| Associated program ID             | `ProgramID`               |
-| File identifier (SHA1)            | `FileID`                  |
-| Product name from file metadata   | `ProductName`             |
-| Product version                   | `ProductVersion`          |
-| File name                         | `Name`                    |
-| Lowercase long path               | `FilePath`                |
-| Original file name from PE header | `OriginalFileName`        |
-| SHA1 hash                         | `SHA1`                    |
-| Publisher name                    | `Publisher`               |
-| File size in bytes                | `FileSize`                |
-| Update Sequence Number            | `USN`                     |
-| Whether file is OS component      | `IsOsComponent`           |
-| Registry key modification time    | `KeyLastWriteTime`        |
-| Registry key name                 | `KeyName`                 |
-| Path to shortcut file             | `LNKPath`                 |
-| Registry key modification time    | `KeyLastWriteTime`        |
-| Device identifier                 | `KeyName`                 |
-| Device class                      | `Class`                   |
-| Device description                | `Description`             |
-| Driver name                       | `DriverName`              |
-| Driver package identifier         | `DriverPackageStrongName` |
-| Device model                      | `Model`                   |
-| First installation date           | `FirstInstallDate`        |
-| Last installation date            | `InstallDate`             |
-| Registry key modification time    | `KeyLastWriteTime`        |
-| Device manufacturer               | `Manufacturer`            |
-| Driver provider                   | `Provider`                |
-| Associated service                | `Service`                 |
-| Driver version date               | `DriverVerDate`           |
-| Driver version                    | `DriverVerVersion`        |
-| Hardware ID                       | `HWID`                    |
-| INF file name                     | `Inf`                     |
-| Parent device ID                  | `ParentID`                |
-| Driver identifier                 | `DriverID`                |
-| Container ID GUID                 | `ContainerID`             |
-| Class GUID                        | `ClassGuid`               |
-| Compatible IDs                    | `COMPID`                  |
-| Bus-reported description          | `BusReportedDescription`  |
-| Driver key name                   | `KeyName`                 |
-| Product name                      | `Product`                 |
-| Product version                   | `ProductVersion`          |
-| Driver file name                  | `DriverName`              |
-| Driver version                    | `DriverVersion`           |
-| Driver package identifier         | `DriverPackageStrongName` |
-| Driver company                    | `DriverCompany`           |
-| Driver last write time            | `DriverLastWriteTime`     |
-| Driver timestamp                  | `DriverTimeStamp`         |
-| Registry key modification time    | `KeyLastWriteTime`        |
-| Whether driver is kernel-mode     | `DriverIsKernelMode`      |
-| Whether driver is signed          | `DriverSigned`            |
-| Associated service                | `Service`                 |
-| INF file name                     | `Inf`                     |
-| Driver identifier                 | `DriverId`                |
-| Driver checksum                   | `DriverCheckSum`          |
-| Driver image size                 | `ImageSize`               |
-| Volume GUID                       | `VolumeID`                |
-| File entry identifier             | `FileID`                  |
-| Associated program ID             | `ProgramID`               |
-| Product name                      | `ProductName`             |
-| Company name                      | `CompanyName`             |
-| File path                         | `FilePath`                |
-| File description                  | `FileDescription`         |
-| File version                      | `FileVersion`             |
-| File size in bytes                | `FileSize`                |
-| SHA1 hash                         | `SHA1`                    |
-| PE compilation timestamp          | `CompilationTime`         |
-| File modification time            | `FileModificationTime`    |
-| File creation time                | `FileCreationTime`        |
-| Amcache entry creation            | `EntryCreationTime`       |
-| Registry key modification time    | `KeyLastWriteTime`        |
-| MFT entry number                  | `MFTEntryNumber`          |
-| MFT sequence number               | `MFTSequenceNumber`       |
-| Program identifier                | `ProgramID`               |
-| Space-separated list of file IDs  | `VolumeIDFileID`          |
-| Program name                      | `ProgramName`             |
-| Program version                   | `ProgramVersion`          |
-| Space-separated file paths        | `FilePaths`               |
-| Publisher name                    | `Publisher`               |
-| Installation date                 | `InstallDate`             |
-| Registry key modification time    | `KeyLastWriteTime`        |
-| Installation source type          | `InstallSourceType`       |
-| Uninstall registry keys           | `UninstallKeys`           |
-| Product code GUID                 | `ProductCode`             |
-| Package code GUID                 | `PackageCode`             |
-| MSI product codes                 | `MSIProductCodes`         |
-| MSI package codes                 | `MSIPackageCodes`         |
-
----
-### Usefull Information from the Amcache
-
-##### ⚪ FileAttribute
-
-> [!question]- Click here
-> <span style="color: #D96C6C;">FileAttribute</span> is a <span style="color: #FFD166;">32-bit unsigned integer</span> describing the type and properties of the object associated with the record. It identifies whether we are dealing with a file or directory, and what attributes it carries – such as hidden, system, archive, or sparse. Attributes of associated streams are excluded.
-> 
-> For a full list of valid attributes: [Microsoft Documentation](https://learn.microsoft.com/zh-cn/openspecs/windows_protocols/ms-fscc/ca28ec38-f155-4768-81d6-4bfeb8586fc9)
+| Category                   | Fields                                   | File content                            |
+| -------------------------- | ---------------------------------------- | --------------------------------------- |
+| File Hash                  | `SHA1`                                   | `*_Amcache_UnassociatedFileEntries.csv` |
+| File Path                  | `FullPath`                               | `*_Amcache_UnassociatedFileEntries.csv` |
+| File Name                  | `Name`                                   | `*_Amcache_UnassociatedFileEntries.csv` |
+| Original File Name         | `OriginalFileName`                       | `*_Amcache_UnassociatedFileEntries.csv` |
+| Publisher                  | `Publisher`                              | `*_Amcache_UnassociatedFileEntries.csv` |
+| Product Name               | `ProductName`                            | `*_Amcache_UnassociatedFileEntries.csv` |
+| File Version               | `Version`                                | `*_Amcache_UnassociatedFileEntries.csv` |
+| File Size                  | `Size`                                   | `*_Amcache_UnassociatedFileEntries.csv` |
+| PE File                    | `IsPeFile`                               | `*_Amcache_UnassociatedFileEntries.csv` |
+| Windows Component          | `IsOsComponent`                          | `*_Amcache_UnassociatedFileEntries.csv` |
+| PE Compile / Link Time     | `LinkDate`                               | `*_Amcache_UnassociatedFileEntries.csv` |
+| Amcache Record Timestamp   | `FileKeyLastWriteTimestamp`              | `*_Amcache_UnassociatedFileEntries.csv` |
+| Program Association        | `ProgramId`                              | `*_Amcache_UnassociatedFileEntries.csv` |
+| USN Reference              | `Usn`                                    | `*_Amcache_UnassociatedFileEntries.csv` |
+| Driver Hash                | `DriverId`                               | `*_Amcache_DriveBinaries.csv`           |
+| Driver Name                | `DriverName`                             | `*_Amcache_DriveBinaries.csv`           |
+| Driver Company             | `DriverCompany`                          | `*_Amcache_DriveBinaries.csv`           |
+| Driver Signature           | `DriverSigned`                           | `*_Amcache_DriveBinaries.csv`           |
+| Kernel Driver              | `DriverIsKernelMode`                     | `*_Amcache_DriveBinaries.csv`           |
+| Inbox Driver               | `DriverInBox`                            | `*_Amcache_DriveBinaries.csv`           |
+| Driver Timestamp           | `DriverLastWriteTime`, `DriverTimeStamp` | `*_Amcache_DriveBinaries.csv`           |
+| Driver Version             | `DriverVersion`                          | `*_Amcache_DriveBinaries.csv`           |
+| Driver Service             | `Service`                                | `*_Amcache_DriveBinaries.csv`           |
+| Driver INF                 | `Inf`                                    | `*_Amcache_DriveBinaries.csv`           |
+| Driver Record Timestamp    | `KeyLastWriteTimestamp`                  | `*_Amcache_DriveBinaries.csv`           |
+| Device Hardware ID         | `HWID`                                   | `*_Amcache_DevicePnps.csv`              |
+| Device Container ID        | `ContainerId`                            | `*_Amcache_DevicePnps.csv`              |
+| Device Description         | `Description`                            | `*_Amcache_DevicePnps.csv`              |
+| Device Manufacturer        | `Manufacturer`                           | `*_Amcache_DevicePnps.csv`              |
+| Device Model               | `Model`                                  | `*_Amcache_DevicePnps.csv`              |
+| Device Class               | `Class`, `ClassGuid`                     | `*_Amcache_DevicePnps.csv`              |
+| Device Enumerator          | `Enumerator`                             | `*_Amcache_DevicePnps.csv`              |
+| Device Driver              | `DriverName`, `DriverId`                 | `*_Amcache_DevicePnps.csv`              |
+| Device Service             | `Service`                                | `*_Amcache_DevicePnps.csv`              |
+| Device INF                 | `Inf`                                    | `*_Amcache_DevicePnps.csv`              |
+| Device Record Timestamp    | `KeyLastWriteTimestamp`                  | `*_Amcache_DevicePnps.csv`              |
+| Device Friendly Name       | `FriendlyName`                           | `*_Amcache_DeviceContainers.csv`        |
+| Device Manufacturer        | `Manufacturer`                           | `*_Amcache_DeviceContainers.csv`        |
+| Device Model               | `ModelName`                              | `*_Amcache_DeviceContainers.csv`        |
+| Device Category            | `PrimaryCategory`                        | `*_Amcache_DeviceContainers.csv`        |
+| Device State               | `IsConnected`, `IsPaired`, `IsActive`    | `*_Amcache_DeviceContainers.csv`        |
+| Device Container Timestamp | `KeyLastWriteTimestamp`                  | `*_Amcache_DeviceContainers.csv`        |
+| Driver Package INF         | `Inf`                                    | `*_Amcache_DriverPackages.csv`          |
+| Driver Package SYS File    | `SYSFILE`                                | `*_Amcache_DriverPackages.csv`          |
+| Driver Package Provider    | `Provider`                               | `*_Amcache_DriverPackages.csv`          |
+| Driver Package Directory   | `Directory`                              | `*_Amcache_DriverPackages.csv`          |
+| Driver Package HWIDs       | `Hwids`                                  | `*_Amcache_DriverPackages.csv`          |
+| Driver Package Version     | `Version`                                | `*_Amcache_DriverPackages.csv`          |
+| Driver Package Date        | `Date`                                   | `*_Amcache_DriverPackages.csv`          |
+| Shortcut Name              | `LnkName`                                | `*_Amcache_ShortCuts.csv`               |
+| Shortcut Timestamp         | `KeyLastWriteTimestamp`                  | `*_Amcache_ShortCuts.csv`               |
 
 ---
 ### Analysis Tools
 
 > [!info]- Click here
-> As with MFT, you can use <span style="color: #D96C6C;">MFTCmd</span> to parse `$J` – it handles this without any issues. After successful parsing, use <span style="color: #D96C6C;">Timeline Explorer</span> or any other <span style="color: #FFD166;">CSV/JSON editor</span> capable of correctly displaying the file's contents for <span style="color: #FFD166;">filtering and analysis</span>.
+> For parsing `Amcache.hve`, you can use **AmcacheParser**, which can parse the artifact into JSON or CSV files. After successful parsing, you can use **Timeline Explorer** or any other CSV/JSON editor capable of correctly displaying the file's contents for filtering and analysis.
 > 
-> **[MFTCmd](https://github.com/EricZimmerman/MFTECmd)** – CLI tool for parsing `$J`.
+> **[AmcacheParser](https://github.com/EricZimmerman/AmcacheParser)** – CLI tool for parsing `Amcache.hve`.
 > 
-> Example command: `.\MFTECmd.exe -f C:\Users\Choice\Desktop\C\Extend\J --csv . --csvf J.csv`
-> ![[Pasted image 20260817132743.png]]
-> ![[Pasted image 20260817132837.png]]
+> Example command: 
+> `.\AmcacheParser.exe -f C:\Windows\appcompat\Programs\Amcache.hve --csv C:\<destination_path>\File_name.csv`
 > 
-> In addition, as mentioned earlier, you can use the ready-made <span style="color: #D96C6C;">[KAPE](https://www.kroll.com/en/services/cyber/reactive-services/kroll-artifact-parser-and-extractor-kape)</span> module – <span style="color: #D96C6C;">MFTECmd_$J</span>. Once parsing is complete, you'll receive a file in <span style="color: #FFD166;">CSV or JSON format</span>, depending on the selected settings.
-> ![[Pasted image 20260817132815.png]]
+> ![[Pasted image 20260828203839.png]]
+>  
+> In addition, as mentioned earlier, you can use the ready-made <span style="color: #D96C6C;">[KAPE](https://www.kroll.com/en/services/cyber/reactive-services/kroll-artifact-parser-and-extractor-kape)</span> module – <span style="color: #D96C6C;">AmcacheParser</span>. Once parsing is complete, you'll receive a file in <span style="color: #FFD166;">CSV or JSON format</span>, depending on the selected settings.
+> ![[Pasted image 20260828224405.png]]
 
 ### Overall
 

@@ -47,7 +47,7 @@ The $J can store information about
 | **File Attributes**   | `FileAttribute`                       |
 
 ---
-### Usefull Information from the $J
+### Useful Information from the $J
 It is worth noting that the fields described below represent what we consider the most valuable for analysis. However, their effectiveness depends entirely on the case at hand.
 ##### ⚪ Update Timestamp
 
@@ -114,7 +114,8 @@ It is worth noting that the fields described below represent what we consider th
 > 
 > **[MFTCmd](https://github.com/EricZimmerman/MFTECmd)** – CLI tool for parsing `$J`.
 > 
-> Example command: `.\MFTECmd.exe -f C:\Users\Choice\Desktop\C\Extend\J --csv . --csvf J.csv`
+> Example command: 
+> `.\MFTECmd.exe -f C:\Users\<username>\Desktop\C\Extend\J --csv . --csvf C:\<destination_path>\J.csv` 
 > ![[Pasted image 20260817132743.png]]
 > ![[Pasted image 20260817132837.png]]
 > 

@@ -29,7 +29,7 @@ The MFT can store information about
 | **Other**                       | `SI<FN`, `u Sec Zeros`, `Copied`                                                                                                                                         |
 
 ---
-### Usefull Information from the MFT
+### Useful Information from the MFT
 The forensic value of MFT artifacts varies depending on the investigation. Some artifacts can provide highly valuable evidence, while others may be less useful depending on the context.
 ##### ⚪ Entry and Parent Entry numbers
 
@@ -127,7 +127,8 @@ The forensic value of MFT artifacts varies depending on the investigation. Some 
 > 
 > **[MFTCmd](https://github.com/EricZimmerman/MFTECmd)** – a <span style="color: #FFD166;">CLI tool</span>, suits experienced users familiar with parsing flags.
 > 
-> Example command:   `.\MFTECmd.exe -f C:\Users\<username>\Desktop\C\MFT --csv C:\Users\Choice\Desktop\ --csvf Ready.csv`
+> Example command:  
+>  ` .\MFTECmd.exe -f C:\Users\<username>\Desktop\C\$MFT --csv C:\Users\<destination_path> --csvf Ready.csv`
 > ![[Pasted image 20260816164841.png]]
 > 
 > **[MFTExplorer](https://ericzimmerman.github.io/#forensic-tools)** – the <span style="color: #FFD166;">GUI counterpart</span>, better suited for beginners; offers filtering, automatic parsing, and a clean file/folder display.
