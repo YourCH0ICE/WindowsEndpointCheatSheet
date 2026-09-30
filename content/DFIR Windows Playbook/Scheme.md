@@ -1,532 +1,533 @@
 ---
-title: DFIR Windows Investigation Scheme
-description: High-level investigation workflow for Windows endpoint incidents.
+title: DFIR Windows Investigation Map
+description: Artifact-driven investigation workflow for Windows endpoint analysis.
 tags:
   - DFIR
   - Windows
-  - Incident-Response
+  - Investigation
   - Playbook
 ---
 
-# DFIR Windows Investigation Scheme
+# DFIR Windows Investigation Map
 
-> [!note]
-> This page is a high-level investigation map. It is intentionally generic and will evolve as individual Windows DFIR playbooks are expanded.
+> [!info] Goal
+> Start with what you already know, prove it with Windows artifacts, determine what happened before and after it, and use every confirmed fact as the next pivot.
+>
+> This page is intentionally high-level. Detailed artifact analysis belongs in dedicated playbook pages.
 
-## Investigation Flow
+---
 
-```mermaid
-flowchart TD
-    A["Alert / Suspicious Activity"] --> B["Validate the Signal"]
+# Start Here
 
-    B -->|False positive / Benign| Z["Document and Close"]
-    B -->|Suspicious / Confirmed| C["Define Scope"]
+## What do you know?
 
-    C --> D["Preserve Evidence"]
-    D --> E["Initial Endpoint Triage"]
+Choose the strongest known starting point:
 
-    E --> F{"What do we know?"}
+- Suspicious executable or DLL
+- Suspicious process
+- PowerShell / CMD / script execution
+- Downloaded file
+- URL / domain / IP address
+- Network connection
+- Registry modification
+- Scheduled Task
+- Windows Service
+- User / account activity
+- Logon event
+- Email / attachment
+- Persistence artifact
+- EDR / AV detection
+- Unknown suspicious activity
 
-    F -->|Email / Link / Attachment| P["Phishing Investigation"]
-    F -->|Process / Script / User Action| U["User Execution Investigation"]
-    F -->|Autorun / Service / Task / Registry| R["Persistence Investigation"]
-    F -->|Unknown| G["General Windows Investigation"]
+Then begin the investigation loop.
 
-    P --> H["Build Timeline"]
-    U --> H
-    R --> H
-    G --> H
+---
 
-    H --> I["Correlate Evidence"]
+# Universal Investigation Loop
 
-    I --> I1["Process Execution"]
-    I --> I2["Files and Artifacts"]
-    I --> I3["Registry and Persistence"]
-    I --> I4["User and Logon Activity"]
-    I --> I5["Network Activity"]
-    I --> I6["Security Controls / EDR"]
+## 1. Identify the Object
 
-    I1 --> J["Determine Attack Chain"]
-    I2 --> J
-    I3 --> J
-    I4 --> J
-    I5 --> J
-    I6 --> J
+First establish exactly what you are investigating.
 
-    J --> K{"Compromise Confirmed?"}
+Ask:
 
-    K -->|No| L["Document Findings"]
-    L --> Z
+- What is it?
+- Where is it?
+- When was it first observed?
+- Which host is involved?
+- Which user is involved?
+- What is the strongest known evidence?
+- Is the object itself suspicious, or only its context?
 
-    K -->|Yes| M["Expand Scope"]
-    M --> N["Contain"]
-    N --> O["Eradicate"]
-    O --> Q["Recover"]
-    Q --> S["Validate Environment"]
-    S --> T["Final Timeline and Report"]
-    T --> V["Lessons Learned / Detection Improvements"]
+Examples:
+
+- `powershell.exe`
+- `C:\Users\user\Downloads\update.exe`
+- `HKCU\...\Run`
+- Scheduled Task `Updater`
+- Connection to `example.com`
+- Logon from another workstation
+
+---
+
+## 2. Prove the Observation
+
+Do not assume that an alert or file presence proves execution or compromise.
+
+Ask:
+
+- Can I prove the file existed?
+- Can I prove it executed?
+- Can I prove which user executed it?
+- Can I prove when it executed?
+- Can I prove which process launched it?
+- Can I prove it made a network connection?
+- Can I prove it created persistence?
+
+Use more than one artifact whenever possible.
+
+### Evidence Principle
+
+**Observation → Artifact → Corroboration → Conclusion**
+
+Example:
+
+```text
+Suspicious EXE found
+        ↓
+Prefetch exists
+        ↓
+4688 / Sysmon / EDR confirms process creation
+        ↓
+Execution confirmed
 ```
 
-## Core Workflow
+---
 
-### 1. Validate the Signal
+## 3. Determine Origin
 
-Determine whether the original alert or observation represents:
+Ask where the object came from.
 
-- [ ] Benign activity
-- [ ] Suspicious activity requiring additional investigation
-- [ ] Confirmed malicious activity
-- [ ] Known administrative or business activity
-- [ ] Detection logic requiring tuning
+Possible origins:
 
-Record the original source of the case:
+- Browser download
+- Email attachment
+- Archive extraction
+- PowerShell download
+- BITS
+- curl / wget
+- certutil
+- SMB share
+- RDP session
+- USB device
+- Software deployment
+- Administrative tool
+- Another process
+- Unknown
 
-- EDR / XDR alert
-- SIEM correlation
-- Antivirus detection
-- User report
-- Email security alert
-- Network detection
-- Threat hunting finding
-- External notification
+Questions:
+
+- Was the file downloaded?
+- Was it extracted from an archive?
+- Was it copied from another host?
+- Was it dropped by another process?
+- Was it created by a script?
+- Was it delivered by email?
+
+### Useful Artifact Categories
+
+- Zone.Identifier
+- Browser history / downloads
+- Email artifacts
+- PowerShell logs
+- Process creation logs
+- File-system timestamps
+- LNK files
+- Recent files
+- EDR telemetry
 
 ---
 
-### 2. Define Scope
+## 4. Determine Execution
 
-Identify what is currently known.
+If the object is executable, scriptable, or launchable, determine whether it actually executed.
 
-- [ ] Hostname
-- [ ] User account
-- [ ] IP address
-- [ ] Alert timestamp
-- [ ] Detection source
-- [ ] Process name
-- [ ] Process command line
-- [ ] Parent process
-- [ ] File path
-- [ ] File hash
-- [ ] URL / Domain / IP
-- [ ] Email sender / recipient
-- [ ] Initial suspected technique
+Ask:
 
-Do not assume the first detected endpoint is the only affected endpoint.
+- Was it executed?
+- How many times?
+- By which user?
+- From which path?
+- What launched it?
+- Was execution interactive or automated?
+- Was it executed locally or remotely?
 
----
+### Useful Artifact Categories
 
-### 3. Preserve Evidence
-
-Before remediation, preserve evidence when operationally possible.
-
-Typical evidence sources:
-
-- Windows Event Logs
-- EDR / XDR telemetry
-- Process tree
-- File metadata and hashes
-- Registry artifacts
+- Prefetch
+- Event ID 4688
+- Sysmon Event ID 1
+- EDR / XDR process telemetry
+- UserAssist
+- BAM / DAM
+- Amcache
+- SRUM
+- PowerShell logs
 - Scheduled Tasks
 - Services
-- Prefetch
-- Amcache
-- Shimcache / AppCompatCache
-- SRUM
-- Browser history
-- PowerShell logs
-- Defender / AV logs
-- Network telemetry
-- Email metadata
-- Memory image when required
-- Disk image when required
 
 > [!warning]
-> Containment may be more important than evidence preservation during an active compromise. Record any action that changes the state of the endpoint.
+> Not every artifact independently proves execution.
+> Always understand what an artifact can and cannot prove before using it as evidence.
 
 ---
 
-### 4. Initial Endpoint Triage
+## 5. Determine Execution Context
 
-Establish the basic incident context.
+Once execution is confirmed, reconstruct the process context.
 
-- [ ] Who executed the activity?
-- [ ] What process started it?
-- [ ] When did it start?
-- [ ] Where did the file or command originate?
-- [ ] What happened immediately before it?
-- [ ] What happened immediately after it?
-- [ ] Did the process create children?
-- [ ] Did it create or modify files?
-- [ ] Did it modify the registry?
-- [ ] Did it create persistence?
-- [ ] Did it communicate externally?
-- [ ] Did it access credentials?
-- [ ] Did it connect to other internal systems?
+Ask:
 
----
+- What was the parent process?
+- What was the command line?
+- Which user context was used?
+- What integrity level was used?
+- Was elevation involved?
+- Was the process started by a service?
+- Was it started by Task Scheduler?
+- Was it launched by PowerShell, CMD, WScript, MSHTA, Rundll32, Regsvr32, or another LOLBin?
 
-## Investigation Entry Points
+### Build the Process Chain
 
-### Phishing
+```text
+Parent
+  ↓
+Process
+  ↓
+Child process
+  ↓
+Next child
+```
 
-Use the dedicated playbook when the incident originates from an email, attachment, link, QR code, or other phishing delivery mechanism.
-
-**Playbook:** [[Phishing]]
-
-Focus on:
-
-- Sender and message origin
-- Recipient scope
-- URLs and redirects
-- Attachments
-- Browser activity
-- Downloaded payloads
-- Child processes from Office applications or browsers
-- Credential exposure
-- Similar messages delivered to other users
+Do not investigate a suspicious process in isolation.
 
 ---
 
-### User Execution
+## 6. Determine What It Did
 
-Use the dedicated playbook when execution depends on user interaction or when a suspicious process, script, installer, document, shortcut, archive, or command was launched.
+For every confirmed process or script, ask what changed because it executed.
 
-**Playbook:** [[User Execution]]
+Check for:
 
-Focus on:
+- Child processes
+- Files created
+- Files modified
+- Files deleted
+- Registry changes
+- Scheduled Tasks
+- Services
+- Account changes
+- Credential access
+- Network connections
+- DNS requests
+- Remote connections
+- Security control changes
+- Persistence
+- Discovery commands
+- Lateral movement
+- Data collection
+- Exfiltration
 
-- Parent-child process relationship
-- Command line
-- Execution timestamp
-- File origin
+Every confirmed action becomes a new pivot.
+
+---
+
+# Pivot Rule
+
+> [!tip]
+> Every confirmed artifact should generate the next investigation question.
+
+Example:
+
+```text
+PowerShell executed
+        ↓
+What command was executed?
+        ↓
+PowerShell downloaded payload.exe
+        ↓
+Where was payload.exe written?
+        ↓
+Was payload.exe executed?
+        ↓
+What launched it?
+        ↓
+What did payload.exe create?
+        ↓
+Did it create persistence?
+        ↓
+Did it communicate externally?
+        ↓
+What happened next?
+```
+
+---
+
+# Common Starting Points
+
+## A. I Have an EXE / DLL
+
+Start with:
+
+1. What is the file?
+2. Where did it come from?
+3. Did it execute?
+4. Who executed it?
+5. What launched it?
+6. What did it create or modify?
+7. Did it connect to the network?
+8. Did it create persistence?
+9. What happened next?
+
+Useful artifact categories:
+
+- File metadata
+- Hash / signature
+- Zone.Identifier
+- Prefetch
+- Amcache
+- UserAssist
+- BAM / DAM
+- 4688
+- Sysmon
+- EDR telemetry
+- SRUM
+- Browser artifacts
+- LNK files
+
+---
+
+## B. I Have PowerShell / CMD / Script Activity
+
+Start with:
+
+1. What command or script executed?
+2. Who executed it?
+3. What launched the interpreter?
+4. Was content encoded or obfuscated?
+5. Did it download anything?
+6. Did it create or modify files?
+7. Did it launch another process?
+8. Did it modify registry or persistence?
+9. Did it connect externally?
+10. What was the next process in the chain?
+
+Useful artifact categories:
+
+- PowerShell 4103 / 4104
+- PowerShell operational logs
+- 4688
+- Sysmon
+- EDR telemetry
+- ConsoleHost_history.txt
+- Prefetch
+- DNS / network telemetry
+- File-system artifacts
+
+---
+
+## C. I Have a Suspicious Process
+
+Start with:
+
+1. What launched it?
+2. What was the command line?
+3. Which user executed it?
+4. From which path?
+5. Is the binary legitimate?
+6. What children did it create?
+7. What files did it touch?
+8. What registry keys did it modify?
+9. What network connections did it make?
+10. Did it establish persistence?
+
+---
+
+## D. I Have a Downloaded File
+
+Start with:
+
+1. Where did it come from?
+2. Which application downloaded it?
+3. Which user downloaded it?
+4. When was it downloaded?
+5. Was it opened?
+6. Was it executed?
+7. What happened after execution?
+8. Did it create another payload?
+
+Useful artifact categories:
+
 - Zone.Identifier
 - Browser download history
-- LNK files
-- Recent files
+- Browser history
+- WebCache
+- Email artifacts
+- PowerShell logs
 - Prefetch
-- Amcache
-- PowerShell / CMD activity
-- Script interpreters
-- LOLBins
-- User context
+- UserAssist
+- EDR telemetry
 
 ---
 
-### Persistence
+## E. I Have a Network IOC
 
-Use the dedicated playbook when there is evidence that an attacker or suspicious application attempted to survive reboot, logoff, or process termination.
+Start with:
 
-**Playbook:** [[Persistence]]
+1. Which process connected?
+2. Which host connected?
+3. Which user context was active?
+4. When did communication start?
+5. Was DNS resolution observed?
+6. Was the connection repeated?
+7. Was data transferred?
+8. Which executable created the connection?
+9. What happened before the connection?
+10. What happened after it?
 
-Focus on:
+Useful artifact categories:
 
-- Run / RunOnce keys
-- Startup folders
+- EDR network telemetry
+- DNS logs
+- Firewall logs
+- Proxy logs
+- SRUM
+- Sysmon
+- Process creation telemetry
+
+---
+
+## F. I Have a Persistence Artifact
+
+Start with:
+
+1. What created it?
+2. When was it created?
+3. Which executable or script does it reference?
+4. Which user context does it run under?
+5. Has the referenced payload executed?
+6. What happens when persistence triggers?
+7. Is the same persistence present elsewhere?
+
+Useful artifact categories:
+
+- Registry
 - Scheduled Tasks
-- Windows Services
-- WMI persistence
+- Services
+- Startup folders
+- WMI
+- Run / RunOnce
 - PowerShell profiles
 - Logon scripts
-- Winlogon modifications
-- IFEO
-- COM hijacking
-- DLL search-order abuse
-- Browser extensions
-- Local accounts
-- Remote access tools
-
----
-
-### Unknown Entry Point
-
-When the initial access or execution method is unknown, start with broad endpoint triage and work backward from the strongest known artifact.
-
-Recommended pivot order:
-
-1. Detection timestamp
-2. Process tree
-3. User logon session
-4. File creation
-5. Network connection
-6. Registry modification
-7. Persistence artifact
-8. Earlier related execution
-9. Initial access evidence
-
----
-
-## Evidence Correlation
-
-Do not evaluate individual artifacts in isolation.
-
-### Process Execution
-
-Correlate:
-
-- Process name
-- Full path
-- Parent process
-- Child processes
-- Command line
-- User context
-- Integrity level
-- Signature
-- Hash
-- First / last execution evidence
-
-### Files and Artifacts
-
-Correlate:
-
-- Creation time
-- Modification time
-- File owner
-- Alternate Data Streams
-- Zone.Identifier
-- Hash reputation
-- Digital signature
-- Prefetch
-- Amcache
-- Recent files
 - LNK files
+- Process telemetry
 
-### Registry and Persistence
-
-Correlate:
-
-- Registry modification time
-- Executable path
-- User hive vs system hive
-- Related process execution
-- Scheduled Task creation
-- Service creation
-- Startup locations
-
-### User and Logon Activity
-
-Correlate:
-
-- Interactive logons
-- Remote logons
-- RDP
-- SMB
-- Service logons
-- Scheduled Task logons
-- Privileged logons
-- Account creation
-- Group membership changes
-- Credential use
-
-### Network Activity
-
-Correlate:
-
-- Destination IP
-- Domain
-- Port
-- Protocol
-- DNS resolution
-- Proxy records
-- Firewall logs
-- EDR network telemetry
-- TLS / certificate metadata where available
-- Internal lateral movement
+See also: [[Persistence]]
 
 ---
 
-## Build the Timeline
+## G. I Have an Email / Attachment
 
-The goal is to reconstruct the sequence of events, not just list artifacts.
+Start with:
 
-```text
-Initial Access
-    ↓
-User / System Execution
-    ↓
-Payload or Script Execution
-    ↓
-Persistence
-    ↓
-Privilege / Credential Activity
-    ↓
-Discovery
-    ↓
-Lateral Movement
-    ↓
-Command and Control
-    ↓
-Collection / Exfiltration
-    ↓
-Impact
-```
+1. Who sent it?
+2. Who received it?
+3. Was the attachment opened?
+4. Was a link clicked?
+5. Was a file downloaded?
+6. Did Office or the browser launch a child process?
+7. Were credentials entered?
+8. What happened after user interaction?
 
-For each relevant event, record:
+See also: [[Phishing]]
 
-| Field | Value |
+---
+
+# Artifact Question Matrix
+
+| Question | Artifact Categories |
 |---|---|
-| Timestamp | |
-| Host | |
-| User | |
-| Process / Artifact | |
-| Action | |
-| Source | |
-| Related IOC | |
-| Confidence | |
-| Notes | |
+| Did this file exist? | MFT, Amcache, filesystem metadata, EDR |
+| Did it execute? | Prefetch, 4688, Sysmon 1, EDR, UserAssist, BAM/DAM |
+| Who executed it? | 4688, Sysmon, EDR, UserAssist, logon context |
+| What launched it? | Process tree, 4688, Sysmon, EDR |
+| Where did it come from? | Zone.Identifier, browser artifacts, email, PowerShell, LNK |
+| What did it create? | MFT, USN Journal, EDR, Sysmon |
+| What did it modify? | Registry, filesystem, EDR, Sysmon |
+| Did it persist? | Run keys, Scheduled Tasks, Services, WMI, Startup |
+| Did it connect out? | EDR, Sysmon, SRUM, DNS, firewall, proxy |
+| Did it run remotely? | RDP, SMB, WinRM, WMI, PsExec, logon events |
+| Did it access credentials? | LSASS-related telemetry, Security logs, EDR |
+| What happened next? | Timeline correlation across all available artifacts |
 
 ---
 
-## Determine the Attack Chain
+# Build the Timeline Continuously
 
-At this stage, answer the following questions:
+Do not wait until the end of the investigation.
 
-- [ ] What was the initial entry point?
-- [ ] What was the first confirmed malicious execution?
-- [ ] Which user account was involved?
-- [ ] Was privilege escalation observed?
-- [ ] Was persistence established?
-- [ ] Were credentials accessed or dumped?
-- [ ] Was lateral movement attempted?
-- [ ] Was command-and-control communication observed?
-- [ ] Was data collected?
-- [ ] Was data exfiltrated?
-- [ ] Was destructive activity observed?
-- [ ] Which endpoints or accounts are affected?
-- [ ] What is still unknown?
+For every confirmed event, record:
+
+| Time | Host | User | Process / Artifact | Action | Evidence |
+|---|---|---|---|---|---|
+| | | | | | |
+
+The timeline should answer:
+
+- What happened first?
+- What caused the next event?
+- Which events are confirmed?
+- Which events are inferred?
+- Where are the gaps?
+- What artifact could fill each gap?
 
 ---
 
-## Scope Expansion
+# Confidence
 
-If compromise is confirmed, search for the same indicators across the environment.
+Label important findings internally as:
 
-Pivot on:
+- **Confirmed** — directly supported by reliable evidence
+- **Supported** — multiple artifacts strongly support the conclusion
+- **Possible** — plausible but not sufficiently proven
+- **Unknown** — evidence is currently insufficient
 
-- File hashes
-- File names
-- File paths
-- Domains
-- IP addresses
-- URLs
-- Command-line fragments
-- Registry paths
-- Scheduled Task names
-- Service names
-- User accounts
-- Parent-child process patterns
-- Email subjects
-- Sender addresses
-- Attachment names
+Avoid turning artifact presence into stronger claims than the artifact supports.
 
-The investigation should move from:
+---
+
+# Investigation Loop Summary
 
 ```text
-Single Alert
-    ↓
-Single Endpoint
-    ↓
-Related User
-    ↓
-Related Endpoints
-    ↓
-Environment-Wide Scope
+START WITH WHAT YOU KNOW
+        ↓
+DEFINE THE QUESTION
+        ↓
+SELECT THE ARTIFACTS THAT CAN ANSWER IT
+        ↓
+PROVE OR REJECT THE HYPOTHESIS
+        ↓
+IDENTIFY WHAT HAPPENED BEFORE
+        ↓
+IDENTIFY WHAT HAPPENED AFTER
+        ↓
+PIVOT TO THE NEXT OBJECT
+        ↓
+UPDATE THE TIMELINE
+        ↓
+REPEAT
 ```
 
----
-
-## Containment
-
-Containment actions depend on the incident and environment.
-
-Possible actions:
-
-- [ ] Isolate endpoint
-- [ ] Disable compromised account
-- [ ] Reset credentials
-- [ ] Revoke active sessions
-- [ ] Block malicious hash
-- [ ] Block domain / IP / URL
-- [ ] Quarantine malicious email
-- [ ] Disable malicious scheduled task
-- [ ] Stop malicious service
-- [ ] Stop malicious process
-- [ ] Restrict lateral movement
-- [ ] Preserve required forensic evidence
-
-> [!important]
-> Record who performed each containment action and when it was performed.
-
----
-
-## Eradication
-
-Remove confirmed malicious components only after their role in the attack chain is understood.
-
-- [ ] Remove malicious files
-- [ ] Remove persistence
-- [ ] Remove unauthorized accounts
-- [ ] Remove malicious services
-- [ ] Remove malicious scheduled tasks
-- [ ] Remove malicious registry entries
-- [ ] Remove unauthorized remote-access tools
-- [ ] Patch exploited vulnerability
-- [ ] Correct exposed configuration
-- [ ] Rotate affected credentials
-- [ ] Update detections and blocks
-
----
-
-## Recovery
-
-Return systems to normal operation only after validating that the compromise has been removed.
-
-- [ ] Reconnect endpoint
-- [ ] Validate security controls
-- [ ] Confirm EDR / AV operation
-- [ ] Verify logging
-- [ ] Verify user access
-- [ ] Monitor for recurring indicators
-- [ ] Confirm no persistence remains
-- [ ] Confirm no suspicious outbound communication remains
-
----
-
-## Investigation Closure
-
-The final case should contain:
-
-- Incident summary
-- Initial detection
-- Scope
-- Affected systems
-- Affected users
-- Root cause
-- Initial access
-- Execution chain
-- Persistence
-- Network activity
-- Credential activity
-- Lateral movement
-- Data access / exfiltration
-- Containment actions
-- Eradication actions
-- Recovery actions
-- Complete timeline
-- Indicators of compromise
-- MITRE ATT&CK mapping
-- Detection gaps
-- Recommended improvements
-- Remaining unknowns
-
----
-
-## Quick Navigation
-
-- [[Phishing]]
-- [[User Execution]]
-- [[Persistence]]
-
----
-
-## Working Principle
-
-> Start from the strongest known artifact, build the timeline in both directions, correlate independent evidence sources, and expand the scope until the complete attack chain is understood.
+> [!quote] Core Principle
+> Do not follow a fixed incident checklist. Follow the evidence.
+> Each confirmed fact should tell you what to investigate next.
