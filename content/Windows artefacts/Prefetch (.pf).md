@@ -86,3 +86,9 @@ The forensic value of Prefetch artifacts varies depending on the investigation. 
 > - [Prefetcher – Wikipedia](https://en.wikipedia.org/wiki/Prefetcher)
 > - [Prefetch Forensics – SANS ISC](https://isc.sans.edu/diary/29168)
 > - [Prefetch Analysis – YouTube](https://www.youtube.com/watch?v=f4RAtR_3zcs)
+
+
+
+```
+HKU\<SID>\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist
+```
